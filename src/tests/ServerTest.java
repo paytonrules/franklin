@@ -1,6 +1,6 @@
 package tests;
 
-import httpserver.HttpServer;
+import httpserver.Server;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,25 +8,25 @@ import java.io.IOException;
 
 import static junit.framework.Assert.assertTrue;
 
-public class HttpServerTest {
+public class ServerTest {
     private int port = 5000;
     private String rootDir = "/Users/nkw/git/cob_spec/public/";
-    private HttpServer httpServer;
+    private Server server;
 
     @Before
     public void setUp() throws IOException {
-        httpServer = new HttpServer(port, rootDir);
+        server = new Server(port, rootDir);
     }
 
     @Test
     public void testServerCreated() throws IOException {
-        assertTrue(httpServer.isBound());
-        httpServer.close();
+        assertTrue(server.isBound());
+        server.close();
     }
 
     @Test
     public void testClose() throws IOException {
-        httpServer.close();
-        assertTrue(httpServer.isClosed());
+        server.close();
+        assertTrue(server.isClosed());
     }
 }

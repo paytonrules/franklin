@@ -1,0 +1,42 @@
+<project name="Franklin" default="build" basedir=".">
+    <description>Nathan's Java Http Server</description>
+    <property name="src" location="src"/>
+    <property name="classes" location="classes"/>
+
+    <path id="classpath">
+        <pathelement path="${classes}"/>
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${classes}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes}"/>
+        <javac srcdir="src" destdir="${classes}" classpathref="classpath" includeantruntime="false"/>
+    </target>
+
+    <target name="build" depends="compile">
+        <jar destfile="Franklin.jar" basedir="${classes}">
+            <manifest>
+                <attribute name="Main-Class" value="httpserver.ServerMain"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run">
+        <java jar="franklin.jar" fork="true"/>
+    </target>
+
+    <target name="test" depends="compile">
+        <junit fork="yes" printsummary="on" haltonfailure="yes" haltonerror="yes">
+            <classpath refid="classpath"/>
+            <formatter type="brief" usefile="false"/>
+            <test name="tests.TestSuite" haltonfailure="no"/>
+        </junit>
+    </target>
+</project>
+
