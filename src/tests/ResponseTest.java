@@ -1,6 +1,6 @@
 package tests;
 
-import httpserver.Response;
+import httpserver.ResponseWriter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ public class ResponseTest {
     @Test
     public void testWrite() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Response.write(response, outputStream);
+        ResponseWriter.write(response, outputStream);
         assertEquals("HTTP/1.1 200 OK\r\n\r\n<html><body>This was a triumph.</body></html>", outputStream.toString());
     }
 }

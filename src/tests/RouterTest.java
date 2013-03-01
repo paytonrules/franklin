@@ -16,7 +16,7 @@ public class RouterTest {
     @Before
     public void setUp() {
         router = new Router();
-        request.put("Request-URI", "/");
+        request.put("RequestReader-URI", "/");
         request.put("HTTP-Version", "HTTP/1.1");
     }
 

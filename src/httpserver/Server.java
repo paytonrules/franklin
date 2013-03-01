@@ -24,8 +24,9 @@ public class Server {
     public void run() throws IOException {
         while(!serverSocket.isClosed()) {
             Socket client = serverSocket.accept();
-            Map<String, Object> request = Request.parseHeader(client.getInputStream());
-            Response.write(router.route(request), client.getOutputStream());
+            Map<String, Object> request = RequestReader.parseHeader(client.getInputStream());
+            Map<String, Object> response = router.route(request);
+            ResponseWriter.write(response, client.getOutputStream());
             client.close();
         }
     }

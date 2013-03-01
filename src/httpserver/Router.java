@@ -1,7 +1,5 @@
 package httpserver;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,13 +19,11 @@ public class Router {
 
         response.put("HTTP-Version", request.get("HTTP-Version"));
 
-        if (routes.get(request.get("Request-URI")) != null) {
-            response.put("Status-Code", "200");
-            response.put("Reason-Phrase", "OK");
+        if (routes.get(request.get("RequestReader-URI")) != null) {
+            ResponseCode.twoHundred(response);
         }
         else {
-            response.put("Status-Code", "404");
-            response.put("Reason-Phrase", "Not Found");
+            ResponseCode.fourOhFour(response);
         }
 
         return response;

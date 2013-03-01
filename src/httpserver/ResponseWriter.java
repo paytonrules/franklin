@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-public class Response {
+public class ResponseWriter {
     private static final String CRLF = "\r\n";
 
     public static void write(Map<String, Object> response, OutputStream outputStream) throws  IOException {
@@ -18,7 +18,6 @@ public class Response {
     }
 
     private static byte[] toUtfEightByteArray(String string) {
-
         return string.getBytes(Charset.forName("utf-8"));
     }
 }
