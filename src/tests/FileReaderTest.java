@@ -1,6 +1,7 @@
 package tests;
 
-import httpserver.FileResponder;
+import httpserver.FileReader;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
@@ -9,15 +10,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class FileResponderTest {
-    private String rootDir = System.getProperty("user.dir") + "/public";
+public class FileReaderTest {
+    private File rootDir = new File(System.getProperty("user.dir"), "/public");
+    private FileReader fileReader;
+
+    @Before
+    public void setUp() {
+        fileReader = new FileReader();
+    }
 
     @Test
     public void testFileDoesNotExist() throws IOException {
-        byte[] fileBytes = FileResponder.read("fake_file", rootDir);
+        File file = new File(rootDir, "fake_file");
+        byte[] fileBytes = fileReader.read(file);
         assertEquals(0, fileBytes.length);
     }
 
@@ -32,6 +40,6 @@ public class FileResponderTest {
         }
         inputStream.close();
 
-        assertTrue(Arrays.equals(fileBytes, FileResponder.read("/test.jpg", rootDir)));
+        assertTrue(Arrays.equals(fileBytes, fileReader.read(file)));
     }
 }

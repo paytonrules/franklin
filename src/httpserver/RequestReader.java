@@ -1,6 +1,7 @@
 package httpserver;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +14,13 @@ public class RequestReader {
 
         items = line.split("\\s");
         requestHeader.put("Method", items[0]);
-        requestHeader.put("RequestReader-URI", items[1]);
         requestHeader.put("HTTP-Version", items[2]);
+
+        items = items[1].split("\\?");
+        requestHeader.put("Request-URI", items[0]);
+        if (items.length > 1) {
+            requestHeader.put("Parameters", decodeParameters(items[1]));
+        }
 
         while (!(line = reader.readLine()).equals("")) {
             items = line.split(": ");
@@ -22,5 +28,18 @@ public class RequestReader {
         }
 
         return requestHeader;
+    }
+
+    public static Map<String, String> decodeParameters(String parameters) throws UnsupportedEncodingException {
+        Map<String, String> decodedParameters = new HashMap<>();
+
+        for(String parameter: parameters.split("&")) {
+            String[] splitParameter = parameter.split("=");
+            if (splitParameter.length == 2) {
+                decodedParameters.put(splitParameter[0], URLDecoder.decode(splitParameter[1], "utf-8"));
+            }
+        }
+
+        return decodedParameters;
     }
 }

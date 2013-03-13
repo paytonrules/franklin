@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class ResponseCodeTest {
     private Map<String, Object> response;
@@ -20,14 +20,18 @@ public class ResponseCodeTest {
     @Test
     public void testTwoHundred() {
         ResponseCode.twoHundred(response);
-        assertEquals("200", response.get("Status-Code"));
-        assertEquals("OK", response.get("Reason-Phrase"));
+        assertEquals("HTTP/1.1 200 OK", response.get("status-line"));
     }
 
     @Test
     public void testFourOhFour() {
         ResponseCode.fourOhFour(response);
-        assertEquals("404", response.get("Status-Code"));
-        assertEquals("Not Found", response.get("Reason-Phrase"));
+        assertEquals("HTTP/1.1 404 Not Found", response.get("status-line"));
+    }
+
+    @Test
+    public void testThreeOnOne() {
+        ResponseCode.threeOhOne(response);
+        assertEquals("HTTP/1.1 301 Moved Permanently", response.get("status-line"));
     }
 }

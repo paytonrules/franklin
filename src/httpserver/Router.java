@@ -1,30 +1,29 @@
 package httpserver;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Router {
-    private Map<String, Object> routes;
+    private Map<String, Responder> routes;
 
     public Router() {
         routes = new HashMap<>();
     }
 
-    public void addRoute(String path) {
-        routes.put(path, new Object());
+    public void addRoute(String path, Responder responder) {
+        routes.put(path, responder);
     }
 
-    public Map<String, Object> route(Map<String, Object> request) {
-        Map<String, Object> response = new HashMap<>();
+    public Map<String, Object> route(Map<String, Object> request) throws IOException {
+        Map<String, Object> response;
 
-        response.put("HTTP-Version", request.get("HTTP-Version"));
+        Responder responder = routes.get(request.get("Request-URI"));
 
-        if (routes.get(request.get("RequestReader-URI")) != null) {
-            ResponseCode.twoHundred(response);
-        }
-        else {
-            ResponseCode.fourOhFour(response);
-        }
+        if (responder != null)
+            response = responder.respond(request);
+        else
+            response = routes.get("filesystem").respond(request);
 
         return response;
     }

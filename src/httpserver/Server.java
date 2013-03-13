@@ -7,17 +7,13 @@ import java.util.Map;
 
 public class Server {
     private int port;
-    private String rootDir;
     private ServerSocket serverSocket;
     private Router router;
 
-    public Server(int port, String rootDir) throws IOException {
+    public Server(int port, Router router) throws IOException {
         this.port = port;
-        this.rootDir = rootDir;
-        router = new Router();
+        this.router = router;
 
-        // This is temporary.
-        router.addRoute("/");
         serverSocket = new ServerSocket(this.port);
     }
 

@@ -1,3 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: httpserver.HttpServer
-
+Main-Class: httpserver.ServerMain

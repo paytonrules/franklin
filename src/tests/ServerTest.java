@@ -1,21 +1,24 @@
 package tests;
 
+import httpserver.Router;
 import httpserver.Server;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertTrue;
+
 
 public class ServerTest {
     private int port = 5000;
-    private String rootDir = "/Users/nkw/git/cob_spec/public/";
     private Server server;
+    private Router router;
 
     @Before
     public void setUp() throws IOException {
-        server = new Server(port, rootDir);
+        router = new Router();
+        server = new Server(port, router);
     }
 
     @Test
