@@ -38,7 +38,7 @@ public class ServerMain {
         router.addRoute("filesystem", new FileSystemResponder(rootDir));
         router.addRoute("/redirect", new RedirectResponder("/"));
 
-        router.addRoute("/form", new Responder() {
+        router.addRoute("/parameters", new Responder() {
             @Override
             public Map<String, Object> respond(Map<String, Object> request) throws IOException {
                 Map<String, Object> response = new HashMap<>();
