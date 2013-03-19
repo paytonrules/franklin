@@ -9,6 +9,7 @@ import org.junit.runners.Suite;
         DirectoryGeneratorTest.class,
         ResponseWriterTest.class,
         UtilitiesTest.class,
+        RequestHandlerTest.class,
         RouterTest.class,
         ServerTest.class,
         RedirectResponderTest.class,
