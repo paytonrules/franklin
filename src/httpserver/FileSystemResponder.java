@@ -18,7 +18,15 @@ public class FileSystemResponder implements Responder {
         Map<String, Object> response = new HashMap<>();
         Map<String, String> headers = new HashMap<>();
 
-        File file = normalizeFilename((String) request.get("Request-URI"));
+        File file;
+
+        try {
+            file = normalizeFilename((String) request.get("Request-URI"));
+        }
+        catch (NullPointerException e) {
+            file = new File("");
+        }
+
         byte[] bytes;
 
         if (file.isFile()) {

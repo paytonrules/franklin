@@ -17,9 +17,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class RequestHandlerTest {
-    private HttpSocket socket;
     private Router router;
-    private InputStream inputStream;
     private OutputStream outputStream;
     private RequestHandler requestHandler;
 
@@ -27,9 +25,9 @@ public class RequestHandlerTest {
     public void setUp() {
         router = new Router();
         String request = "HTTP/1.1 / GET\r\n\r\n";
-        inputStream = new ByteArrayInputStream(request.getBytes(Charset.forName("utf-8")));
+        InputStream inputStream = new ByteArrayInputStream(request.getBytes(Charset.forName("utf-8")));
         outputStream = new ByteArrayOutputStream();
-        socket = new MocketWrapper(new Mocket(inputStream, outputStream));
+        HttpSocket socket = new MocketWrapper(new Mocket(inputStream, outputStream));
         requestHandler = new RequestHandler(socket, router);
     }
 

@@ -15,7 +15,8 @@ public class Server {
     public Server(HttpServerSocket serverSocket, Router router) throws IOException {
         this.router = router;
         this.serverSocket = serverSocket;
-        threadPool = Executors.newFixedThreadPool(50);
+        int cores = Runtime.getRuntime().availableProcessors();
+        threadPool = Executors.newFixedThreadPool(cores);
     }
 
     public void run() throws IOException {

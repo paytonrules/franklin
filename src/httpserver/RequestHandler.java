@@ -21,7 +21,8 @@ public class RequestHandler implements Runnable {
             Map<String, Object> response = router.route(request);
             ResponseWriter.write(response, socket.getOutputStream());
             socket.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

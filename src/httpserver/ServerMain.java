@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class ServerMain {
@@ -46,10 +45,8 @@ public class ServerMain {
                 Map<String, String> parameters = (Map<String, String>) request.get("Parameters");
 
                 String params = "";
-                Iterator iterator = parameters.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry entry = (Map.Entry) iterator.next();
-                    params += String.format("%s = %s\n", entry.getKey(), entry.getValue());
+                for (String key: parameters.keySet()) {
+                    params += String.format("%s = %s\n", key, parameters.get(key));
                 }
 
                 String html = "<DOCTYPE! HTML><html><body>%s</body></html>";
