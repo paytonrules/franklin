@@ -14,9 +14,9 @@ public class RedirectResponder implements Responder {
         Map<String, Object> response = new HashMap<>();
         Map<String, String> headers = new HashMap<>();
 
-        ResponseCode.threeOhOne(response);
+        Utilities.threeOhOne(response);
+        Utilities.writeCommonHeaders(headers, "text/html", 0);
         headers.put("Location", String.format("http://%s%s", request.get("Host"), redirectUri));
-        headers.put("Content-Length", "0");
         response.put("message-header", headers);
         response.put("message-body", new byte[0]);
 

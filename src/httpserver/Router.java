@@ -20,10 +20,12 @@ public class Router {
 
         Responder responder = routes.get(request.get("Request-URI"));
 
-        if (responder != null)
+        if (responder != null) {
             response = responder.respond(request);
-        else
+        }
+        else {
             response = routes.get("filesystem").respond(request);
+        }
 
         return response;
     }

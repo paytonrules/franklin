@@ -18,33 +18,27 @@ public class FileSystemResponder implements Responder {
         Map<String, Object> response = new HashMap<>();
         Map<String, String> headers = new HashMap<>();
 
-//        response.put("HTTP-Version", request.get("HTTP-Version"));
         File file = normalizeFilename((String) request.get("Request-URI"));
         byte[] bytes;
 
         if (file.isFile()) {
-            ResponseCode.twoHundred(response);
-            bytes = FileReader.read(file);
+            Utilities.twoHundred(response);
+            bytes = Utilities.readFile(file);
         }
         else if (file.isDirectory()) {
-            ResponseCode.twoHundred(response);
-            bytes = DirectoryReader.read(file, rootDir);
+            Utilities.twoHundred(response);
+            bytes = Utilities.readDirAndGenerateHtml(file, rootDir);
             file = new File("directory.html");
         }
         else {
-            ResponseCode.fourOhFour(response);
+            Utilities.fourOhFour(response);
             file = new File(rootDir, "404.html");
-            bytes = FileReader.read(file);
+            bytes = Utilities.readFile(file);
         }
 
-        headers.put("Content-Type", URLConnection.guessContentTypeFromName(file.getName()));
-        headers.put("Content-Length", String.valueOf(bytes.length));
+        Utilities.writeCommonHeaders(headers, URLConnection.guessContentTypeFromName(file.getName()), bytes.length);
         response.put("message-header", headers);
         response.put("message-body", bytes);
-
-//        response.put("Content-Type", URLConnection.guessContentTypeFromName(file.getName()));
-//        response.put("Content-Length", bytes.length);
-//        response.put("Body", bytes);
 
         return response;
     }

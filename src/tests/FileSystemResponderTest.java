@@ -1,7 +1,7 @@
 package tests;
 
-import httpserver.DirectoryReader;
 import httpserver.FileSystemResponder;
+import httpserver.Utilities;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +47,7 @@ public class FileSystemResponderTest {
     public void testUriIsDirectory() throws IOException {
         assertTrue(rootDir.isDirectory());
 
-        byte[] bytes = DirectoryReader.read(rootDir, rootDir);
+        byte[] bytes = Utilities.readDirAndGenerateHtml(rootDir, rootDir);
 
         request.put("Request-URI", "/");
 

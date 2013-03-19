@@ -1,25 +1,23 @@
 package httpserver;
 
+import httpserver.sockets.HttpServerSocket;
+import httpserver.sockets.HttpSocket;
+
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Map;
 
 public class Server {
-    private int port;
-    private ServerSocket serverSocket;
+    private HttpServerSocket serverSocket;
     private Router router;
 
-    public Server(int port, Router router) throws IOException {
-        this.port = port;
+    public Server(HttpServerSocket serverSocket, Router router) throws IOException {
         this.router = router;
-
-        serverSocket = new ServerSocket(this.port);
+        this.serverSocket = serverSocket;
     }
 
     public void run() throws IOException {
         while(!serverSocket.isClosed()) {
-            Socket client = serverSocket.accept();
+            HttpSocket client = serverSocket.accept();
             Map<String, Object> request = RequestReader.parseHeader(client.getInputStream());
             Map<String, Object> response = router.route(request);
             ResponseWriter.write(response, client.getOutputStream());

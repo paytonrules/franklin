@@ -6,25 +6,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestReader {
-    public static Map<String, Object> parseHeader(InputStream inputStream) throws IOException {
+    public static Map<String, Object> parseHeader(InputStream inputStream) {
         Map<String, Object> requestHeader = new HashMap<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = reader.readLine();
-        String[] items;
 
-        items = line.split("\\s");
-        requestHeader.put("Method", items[0]);
-        requestHeader.put("HTTP-Version", items[2]);
+        try {
+            String line = reader.readLine();
+            String[] items;
 
-        items = items[1].split("\\?");
-        requestHeader.put("Request-URI", items[0]);
-        if (items.length > 1) {
-            requestHeader.put("Parameters", decodeParameters(items[1]));
+            items = line.split("\\s");
+            requestHeader.put("Method", items[0]);
+            requestHeader.put("HTTP-Version", items[2]);
+
+            items = items[1].split("\\?");
+            requestHeader.put("Request-URI", items[0]);
+            if (items.length > 1) {
+                requestHeader.put("Parameters", decodeParameters(items[1]));
+            }
+
+            while (!(line = reader.readLine()).equals("")) {
+                items = line.split(": ");
+                requestHeader.put(items[0], items[1]);
+            }
         }
-
-        while (!(line = reader.readLine()).equals("")) {
-            items = line.split(": ");
-            requestHeader.put(items[0], items[1]);
+        catch (Exception e) {
+            requestHeader = new HashMap<>();
         }
 
         return requestHeader;

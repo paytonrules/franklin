@@ -33,7 +33,7 @@ public class RouterTest {
             public Map<String, Object> respond(Map<String, Object> request) throws IOException {
                 Map<String, Object> response = new HashMap<>();
                 response.put("HTTP-Version", request.get("HTTP-Version"));
-                ResponseCode.twoHundred(response);
+                Utilities.twoHundred(response);
                 return response;
             }
         });
