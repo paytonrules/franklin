@@ -1,4 +1,4 @@
-package httpserver;
+package httpserver.responders;
 
 import java.io.IOException;
 import java.util.Map;

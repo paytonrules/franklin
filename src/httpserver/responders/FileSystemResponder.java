@@ -1,4 +1,6 @@
-package httpserver;
+package httpserver.responders;
+
+import httpserver.Utilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +17,7 @@ public class FileSystemResponder implements Responder {
 
     @Override
     public Map<String, Object> respond(Map<String, Object> request) throws IOException {
-        Map<String, Object> response = new HashMap<>();
         Map<String, String> headers = new HashMap<>();
-
         File file;
 
         try {
@@ -27,28 +27,27 @@ public class FileSystemResponder implements Responder {
             file = new File("");
         }
 
-        byte[] bytes;
+        byte[] body;
 
+        String statusLine;
         if (file.isFile()) {
-            Utilities.twoHundred(response);
-            bytes = Utilities.readFile(file);
+            statusLine = Utilities.statusLine(200);
+            body = Utilities.readFile(file);
         }
         else if (file.isDirectory()) {
-            Utilities.twoHundred(response);
-            bytes = Utilities.readDirAndGenerateHtml(file, rootDir);
+            statusLine = Utilities.statusLine(200);
+            body = Utilities.readDirAndGenerateHtml(file, rootDir);
             file = new File("directory.html");
         }
         else {
-            Utilities.fourOhFour(response);
+            statusLine = Utilities.statusLine(404);
             file = new File(rootDir, "404.html");
-            bytes = Utilities.readFile(file);
+            body = Utilities.readFile(file);
         }
 
-        Utilities.writeCommonHeaders(headers, URLConnection.guessContentTypeFromName(file.getName()), bytes.length);
-        response.put("message-header", headers);
-        response.put("message-body", bytes);
+        Utilities.writeCommonHeaders(headers, URLConnection.guessContentTypeFromName(file.getName()), body.length);
 
-        return response;
+        return Utilities.generateResponse(statusLine, headers, body);
     }
 
     private File normalizeFilename(String filename) {

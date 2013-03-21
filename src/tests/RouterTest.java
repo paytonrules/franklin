@@ -1,6 +1,8 @@
 package tests;
 
 import httpserver.*;
+import httpserver.responders.FileSystemResponder;
+import httpserver.responders.Responder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-
 
 public class RouterTest {
     private File rootDir = new File(System.getProperty("user.dir"), "/public");
@@ -32,8 +33,7 @@ public class RouterTest {
             @Override
             public Map<String, Object> respond(Map<String, Object> request) throws IOException {
                 Map<String, Object> response = new HashMap<>();
-                response.put("HTTP-Version", request.get("HTTP-Version"));
-                Utilities.twoHundred(response);
+                response.put("status-line", Utilities.statusLine(200));
                 return response;
             }
         });

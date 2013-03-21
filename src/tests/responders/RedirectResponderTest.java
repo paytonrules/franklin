@@ -1,6 +1,6 @@
-package tests;
+package tests.responders;
 
-import httpserver.RedirectResponder;
+import httpserver.responders.RedirectResponder;
 import org.junit.Before;
 import org.junit.Test;
 

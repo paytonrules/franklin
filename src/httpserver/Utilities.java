@@ -5,20 +5,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Utilities {
-    public static void twoHundred(Map<String, Object> response) {
-        response.put("status-line", statusLine(200, "OK"));
-    }
-
-    public static void fourOhFour(Map<String, Object> response) {
-        response.put("status-line", statusLine(404, "Not Found"));
-    }
-
-    public static void threeOhOne(Map<String, Object> response) {
-        response.put("status-line", statusLine(301, "Moved Permanently"));
-    }
+    private static Map<Integer, String> statusCodes = createCodesMap();
 
     public static void writeCommonHeaders(Map<String, String> headers, String type, int size) {
         headers.put("Content-Type", type);
@@ -27,18 +19,28 @@ public class Utilities {
         headers.put("Server", "Franklin-0.1");
     }
 
-    private static String statusLine(int code, String phrase) {
-        return String.format("HTTP/1.1 %d %s", code, phrase);
+    public static String statusLine(int code) {
+        return String.format("HTTP/1.1 %d %s", code, statusCodes.get(code));
+    }
+
+    public static Map<String, Object> generateResponse(String statusLine, Map<String, String> messageHeader, byte[] messageBody) {
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("status-line", statusLine);
+        response.put("message-header", messageHeader);
+        response.put("message-body", messageBody);
+
+        return response;
     }
 
     public static byte[] readDirAndGenerateHtml(File directory, File rootDir) throws IOException {
         if (!directory.isDirectory())
             return new byte[0];
-        return DirectoryGenerator.indexPage(directory, rootDir).getBytes(Charset.forName("utf-8"));
+        HtmlGenerator generator = new HtmlGenerator();
+        return generator.getIndexPage(directory, rootDir).getBytes(Charset.forName("utf-8"));
     }
 
     public static byte[] readFile(File file) throws IOException {
-        // Might be better to throw an error. We'll see...
         if (!file.isFile()) {
            return new byte[0];
         }
@@ -49,5 +51,15 @@ public class Utilities {
         inputStream.close();
 
         return fileBytes;
+    }
+
+    private static Map<Integer, String> createCodesMap() {
+        Map<Integer, String> codes = new HashMap<>();
+
+        codes.put(200, "OK");
+        codes.put(404, "Not Found");
+        codes.put(301, "Moved Permanently");
+
+        return Collections.unmodifiableMap(codes);
     }
 }

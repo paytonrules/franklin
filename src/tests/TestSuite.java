@@ -2,11 +2,13 @@ package tests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import tests.responders.FileSystemResponderTest;
+import tests.responders.RedirectResponderTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        RequestReaderTest.class,
-        DirectoryGeneratorTest.class,
+        RequestTest.class,
+        HtmlGeneratorTest.class,
         ResponseWriterTest.class,
         UtilitiesTest.class,
         RequestHandlerTest.class,

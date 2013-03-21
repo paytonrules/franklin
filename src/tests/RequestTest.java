@@ -1,11 +1,10 @@
 package tests;
 
-import httpserver.RequestReader;
+import httpserver.Request;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -14,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class RequestReaderTest {
+public class RequestTest {
     private String note;
     private ByteArrayInputStream inputStream;
 
@@ -26,7 +25,7 @@ public class RequestReaderTest {
 
     @Test
     public void testParseHeader() {
-        Map<String, Object> requestHeader = RequestReader.parseHeader(inputStream);
+        Map<String, Object> requestHeader = Request.parseRequest(inputStream);
 
         assertEquals("GET", requestHeader.get("Method"));
         assertEquals("/", requestHeader.get("Request-URI"));
@@ -39,14 +38,14 @@ public class RequestReaderTest {
 
     @Test
     public void testNullRequest() {
-        Map<String, Object> requestHeader = RequestReader.parseHeader(new ByteArrayInputStream(new byte[0]));
+        Map<String, Object> requestHeader = Request.parseRequest(new ByteArrayInputStream(new byte[0]));
         assertTrue(requestHeader.isEmpty());
     }
 
     @Test
     public void testParameterDecode() throws UnsupportedEncodingException {
         String params = "var1=%3C%22aperture%20science%22%3E&var2=we+do+what+we+must+because+we+can";
-        Map<String, String> parameters = RequestReader.decodeParameters(params);
+        Map<String, String> parameters = Request.parseQueryString(params);
         assertEquals("<\"aperture science\">", parameters.get("var1"));
         assertEquals("we do what we must because we can", parameters.get("var2"));
     }

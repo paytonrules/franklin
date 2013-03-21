@@ -1,7 +1,7 @@
 package tests;
 
 import httpserver.RequestHandler;
-import httpserver.Responder;
+import httpserver.responders.Responder;
 import httpserver.Router;
 import httpserver.sockets.HttpSocket;
 import org.junit.Before;

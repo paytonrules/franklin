@@ -1,28 +1,27 @@
 package httpserver;
 
+import httpserver.responders.FileSystemResponder;
+import httpserver.responders.ParameterResponder;
+import httpserver.responders.PutPostResponder;
+import httpserver.responders.RedirectResponder;
 import httpserver.sockets.ServerSocketWrapper;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ServerMain {
-    private static Router router;
-    private static File rootDir;
 
     public static void main(String[] args) {
         Map<String, Object> parsedArgs = parseArgs(args);
 
-        rootDir = new File((String) parsedArgs.get("Root-Dir"));
+        File rootDir = new File((String) parsedArgs.get("Root-Dir"));
+        Router router = new Router();
+        setRoutes(router, rootDir);
 
         Server httpServer;
-        router = new Router();
-
-        setRoutes();
-
         int port = (int) parsedArgs.get("Port");
 
         try {
@@ -33,34 +32,11 @@ public class ServerMain {
         }
     }
 
-    private static void setRoutes() {
+    private static void setRoutes(Router router, File rootDir) {
         router.addRoute("filesystem", new FileSystemResponder(rootDir));
         router.addRoute("/redirect", new RedirectResponder("/"));
-
-        router.addRoute("/parameters", new Responder() {
-            @Override
-            public Map<String, Object> respond(Map<String, Object> request) throws IOException {
-                Map<String, Object> response = new HashMap<>();
-                Map<String, String> headers = new HashMap<>();
-                Map<String, String> parameters = (Map<String, String>) request.get("Parameters");
-
-                String params = "";
-                for (String key: parameters.keySet()) {
-                    params += String.format("%s = %s\n", key, parameters.get(key));
-                }
-
-                String html = "<DOCTYPE! HTML><html><body>%s</body></html>";
-                byte[] bytes = String.format(html, params).getBytes(Charset.forName("utf-8"));
-                response.put("message-body", bytes);
-
-                Utilities.writeCommonHeaders(headers, "text/html", bytes.length);
-                response.put("message-header", headers);
-
-                Utilities.twoHundred(response);
-
-                return response;
-            }
-        });
+        router.addRoute("/parameters", new ParameterResponder());
+        router.addRoute("/form", new PutPostResponder());
     }
 
     private static Map<String, Object> parseArgs(String[] args) {

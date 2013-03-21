@@ -1,6 +1,6 @@
-package tests;
+package tests.responders;
 
-import httpserver.FileSystemResponder;
+import httpserver.responders.FileSystemResponder;
 import httpserver.Utilities;
 import org.junit.Before;
 import org.junit.Test;

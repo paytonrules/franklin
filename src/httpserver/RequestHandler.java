@@ -17,7 +17,7 @@ public class RequestHandler implements Runnable {
     @Override
     public void run() {
         try {
-            Map<String, Object> request = RequestReader.parseHeader(socket.getInputStream());
+            Map<String, Object> request = Request.parseRequest(socket.getInputStream());
             Map<String, Object> response = router.route(request);
             ResponseWriter.write(response, socket.getOutputStream());
             socket.close();

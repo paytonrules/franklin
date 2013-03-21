@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,21 +29,20 @@ public class UtilitiesTest {
     }
 
     @Test
-    public void testTwoHundred() {
-        Utilities.twoHundred(response);
+    public void testStatusLine() {
+        response.put("status-line", Utilities.statusLine(200));
         assertEquals("HTTP/1.1 200 OK", response.get("status-line"));
     }
 
     @Test
-    public void testFourOhFour() {
-        Utilities.fourOhFour(response);
-        assertEquals("HTTP/1.1 404 Not Found", response.get("status-line"));
-    }
+    public void testResponse() {
+        byte[] body = "and Junk".getBytes(Charset.forName("utf-8"));
+        Map<String, String> headers = new HashMap<>();
+        Map<String, Object> response = Utilities.generateResponse("Stuff", headers, body);
 
-    @Test
-    public void testThreeOnOne() {
-        Utilities.threeOhOne(response);
-        assertEquals("HTTP/1.1 301 Moved Permanently", response.get("status-line"));
+        assertEquals("Stuff", response.get("status-line"));
+        assertEquals(headers, response.get("message-header"));
+        assertEquals(body, response.get("message-body"));
     }
 
     @Test
