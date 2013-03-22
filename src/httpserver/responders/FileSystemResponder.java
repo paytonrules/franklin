@@ -5,7 +5,6 @@ import httpserver.Utilities;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLConnection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class FileSystemResponder implements Responder {
@@ -17,7 +16,6 @@ public class FileSystemResponder implements Responder {
 
     @Override
     public Map<String, Object> respond(Map<String, Object> request) throws IOException {
-        Map<String, String> headers = new HashMap<>();
         File file;
 
         try {
@@ -45,9 +43,8 @@ public class FileSystemResponder implements Responder {
             body = Utilities.readFile(file);
         }
 
-        Utilities.writeCommonHeaders(headers, URLConnection.guessContentTypeFromName(file.getName()), body.length);
-
-        return Utilities.generateResponse(statusLine, headers, body);
+        Map<String, String> header = Utilities.getCommonHeader(URLConnection.guessContentTypeFromName(file.getName()), body.length);
+        return Utilities.generateResponse(statusLine, header, body);
     }
 
     private File normalizeFilename(String filename) {

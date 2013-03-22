@@ -19,7 +19,7 @@ public class Request {
             requestHeader.put("HTTP-Version", items[2]);
 
             items = items[1].split("\\?");
-            requestHeader.put("Request-URI", items[0]);
+            requestHeader.put("Request-URI", URLDecoder.decode(items[0], "utf-8"));
             if (items.length > 1) {
                 requestHeader.put("Parameters", parseQueryString(items[1]));
             }

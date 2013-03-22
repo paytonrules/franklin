@@ -18,23 +18,18 @@ public class PutPostResponder implements Responder {
 
     @Override
     public Map<String, Object> respond(Map<String, Object> request) throws IOException {
-        Map<String, String> headers = new HashMap<>();
-
         byte[] body = new byte[0];
 
         if (request.get("Method").equals("GET")) {
             body = generator.getEchoPage(storedBody, "%s = %s<br/>").getBytes(Charset.forName("utf-8"));
         }
         else {
-            Map<String, String> messageBody = (Map<String, String>) request.get("Body");
-
-            if (messageBody != null) {
-                storedBody = messageBody;
+            if (request.get("Body") != null) {
+                storedBody = (Map<String, String>) request.get("Body");
             }
         }
 
-        Utilities.writeCommonHeaders(headers, "text/html", body.length);
-
-        return Utilities.generateResponse(Utilities.statusLine(200), headers, body);
+        Map<String, String> header = Utilities.getCommonHeader("text/html", body.length);
+        return Utilities.generateResponse(Utilities.statusLine(200), header, body);
     }
 }

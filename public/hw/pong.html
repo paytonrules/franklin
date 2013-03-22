@@ -1,0 +1,119 @@
+<html>
+<head>
+	<script type="text/javascript">
+		var p1, p2, ball, field;
+		
+		function init() {
+			ball = new Object();
+			p1 = document.getElementById('p1');
+			p2 = document.getElementById('p2');
+			ball.obj = document.getElementById('ball');
+			ball.moveX = Math.floor(Math.random()*1)+5;
+			ball.moveY = Math.floor(Math.random()*1)+5;
+			
+			if ((Math.floor(Math.random()*2) + 1) % 2 == 0)
+				ball.moveX *= -1;
+			if ((Math.floor(Math.random()*2) + 1) % 2 == 0)
+				ball.moveY *= -1;
+			
+			field = document.getElementById('container');
+			
+			p1.style.left = (field.offsetLeft + 25) + "px";
+			p1.style.top = ((field.offsetHeight / 2) - (p1.offsetHeight / 2)) + "px";
+			p2.style.left = (field.offsetWidth - 25) + "px";
+			p2.style.top = ((field.offsetHeight / 2) - (p2.offsetHeight / 2)) + "px";
+			
+			ball.obj.style.left = ((field.offsetWidth / 2) - (ball.obj.offsetWidth / 2)) + "px";
+			ball.obj.style.top = ((field.offsetHeight / 2) - (ball.obj.offsetHeight / 2)) + "px";
+			window.setInterval("ballMove()", 50);
+		}
+		
+		function ballMove() {
+			if (ball.obj.offsetLeft + ball.obj.offsetWidth >= field.offsetWidth ||
+				ball.obj.offsetLeft <= field.offsetLeft ||
+					(ball.obj.offsetLeft < p1.offsetLeft + p1.offsetWidth &&
+						(ball.obj.offsetTop >= p1.offsetTop && 
+						ball.obj.offsetTop + ball.obj.offsetHeight <= p1.offsetTop + p1.offsetHeight)) ||
+					(ball.obj.offsetLeft + ball.obj.offsetWidth > p2.offsetLeft &&
+						(ball.obj.offsetTop >= p2.offsetTop && 
+						ball.obj.offsetTop + ball.obj.offsetHeight <= p2.offsetTop + p2.offsetHeight)))
+				ball.moveX *= -1;
+			if (ball.obj.offsetTop + ball.obj.offsetHeight >= field.offsetHeight ||
+				ball.obj.offsetTop <= field.offsetTop)
+				ball.moveY *= -1;
+			ball.obj.style.left = (ball.obj.offsetLeft + ball.moveX) + "px";
+			ball.obj.style.top = (ball.obj.offsetTop + ball.moveY) + "px";
+		}
+		
+		var dragObj = new Object();
+	
+		function dragStart(obj, event) {
+			var x, y;
+			dragObj.elNode = obj;
+
+			x = event.clientX;
+			y = event.clientY;
+
+			dragObj.cursorStartX = x;
+			dragObj.cursorStartY = y;
+			dragObj.elStartLeft = parseInt(dragObj.elNode.style.left, 10);
+			dragObj.elStartTop = parseInt(dragObj.elNode.style.top,  10);
+		
+			document.addEventListener("mousemove", dragGo,   true);
+			document.addEventListener("mouseup",   dragStop, true);
+			event.preventDefault();
+		}
+
+		function dragGo(event) {
+			var x, y;
+
+			x = event.clientX;
+			y = event.clientY;
+			
+			dragObj.elNode.style.left = (dragObj.elStartLeft + x - dragObj.cursorStartX) + "px";
+			dragObj.elNode.style.top  = (dragObj.elStartTop  + y - dragObj.cursorStartY) + "px";
+			event.preventDefault();
+		}
+
+		function dragStop(event) {
+			document.removeEventListener("mousemove", dragGo,   true);
+			document.removeEventListener("mouseup",   dragStop, true);
+		}
+	</script>
+	<style type="text/css">
+		#container {
+			border: thin solid green;
+			width: 640px;
+			height: 480px;
+		}
+		
+		#p1 {
+			background-color: green;
+			width: 10px;
+			height: 65px;
+			position: absolute;
+		}
+		
+		#p2 {
+			background-color: green;
+			width: 10px;
+			height: 65px;
+			position: absolute;
+		}
+		
+		#ball {
+			background-color: green;
+			width: 15px;
+			height: 15px;
+			position: absolute;
+		}
+	</style>
+</head>
+<body onLoad="init()">
+	<div id="container">
+		<div id="p1" onMouseDown="dragStart(this, event)"></div>
+		<div id="p2" onMouseDown="dragStart(this, event)"></div>
+		<div id="ball"></div>
+	</div>
+</body>
+</html>

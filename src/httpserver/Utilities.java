@@ -12,11 +12,15 @@ import java.util.Map;
 public class Utilities {
     private static Map<Integer, String> statusCodes = createCodesMap();
 
-    public static void writeCommonHeaders(Map<String, String> headers, String type, int size) {
+    public static Map<String, String> getCommonHeader(String type, int size) {
+        Map<String, String> headers = new HashMap<>();
+
         headers.put("Content-Type", type);
         headers.put("Content-Length", String.valueOf(size));
         headers.put("Connection", "close");
         headers.put("Server", "Franklin-0.1");
+
+        return headers;
     }
 
     public static String statusLine(int code) {

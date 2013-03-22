@@ -2,7 +2,6 @@ package httpserver.responders;
 
 import httpserver.Utilities;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class RedirectResponder implements Responder {
@@ -13,13 +12,9 @@ public class RedirectResponder implements Responder {
     }
 
     public Map<String, Object> respond(Map<String, Object> request) {
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> header = Utilities.getCommonHeader("text/html", 0);
+        header.put("Location", String.format("http://%s%s", request.get("Host"), redirectUri));
 
-        byte[] body = new byte[0];
-
-        Utilities.writeCommonHeaders(headers, "text/html", body.length);
-        headers.put("Location", String.format("http://%s%s", request.get("Host"), redirectUri));
-
-        return Utilities.generateResponse(Utilities.statusLine(301), headers, body);
+        return Utilities.generateResponse(Utilities.statusLine(301), header, new byte[0]);
     }
 }

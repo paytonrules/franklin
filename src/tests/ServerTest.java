@@ -13,7 +13,6 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
-
 public class ServerTest {
     private Server server;
     private Router router;

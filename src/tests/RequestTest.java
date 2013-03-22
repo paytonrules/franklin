@@ -49,4 +49,14 @@ public class RequestTest {
         assertEquals("<\"aperture science\">", parameters.get("var1"));
         assertEquals("we do what we must because we can", parameters.get("var2"));
     }
+
+    @Test
+    public void testPostRequest() {
+        note = "POST / HTTP/1.1\r\nHost: localhost:5000\r\nContent-Length: 30\r\n\r\nline=for+the+good+of+all+of+us";
+        inputStream = new ByteArrayInputStream(note.getBytes(Charset.forName("utf-8")));
+
+        Map<String, Object> request = Request.parseRequest(inputStream);
+        Map<String, String> body = (Map<String, String>) request.get("Body");
+        assertEquals("for the good of all of us", body.get("line"));
+    }
 }

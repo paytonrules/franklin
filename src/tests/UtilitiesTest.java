@@ -47,7 +47,7 @@ public class UtilitiesTest {
 
     @Test
     public void testCommonHeaders() {
-        Utilities.writeCommonHeaders(headers, "text/html", 352);
+        headers = Utilities.getCommonHeader("text/html", 352);
         assertEquals("text/html", headers.get("Content-Type"));
         assertEquals("352", headers.get("Content-Length"));
         assertEquals("close", headers.get("Connection"));

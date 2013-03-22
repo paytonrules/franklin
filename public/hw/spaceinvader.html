@@ -1,0 +1,52 @@
+<html>
+<head>
+	<style type="text/css">
+		#container div {
+			float: left;
+			width: 40px;
+			height: 40px;
+		}
+		
+		.row {
+			clear: left;
+		}
+		
+		.c {
+			background-color: none;
+		}
+		
+		.r {
+			background-color: green;
+		}
+		
+		.w {
+			background-color: white;
+		}
+	</style>
+	
+</head>
+<body>
+	<div id="container">
+		<script type="text/javascript">
+			var invader = new Array();
+			invader[0] = "ccrrrcccrrrcc";
+			invader[1] = "ccrwrrcrrwrcc";
+			invader[2] = "ccrrwrrrwrrcc";
+			invader[3] = "crrwwwwwwwrrc";
+			invader[4] = "rrwwrwwwrwwrr";
+			invader[5] = "rwwwwwwwwwwwr";
+			invader[6] = "rwrwwwwwwwrwr";
+			invader[7] = "rwrwrrrrrwrwr";
+			invader[8] = "rrrrwwrwwrrrr";
+			invader[9] = "cccrrrrrrrccc";
+			
+			for (var i = 0; i < invader.length; i++) {
+				document.write('<div class="row"></div>');
+				for (var j = 0; j < invader[i].length; j++) {
+					document.write('<div class="' + invader[i][j] + '"></div>');
+				}
+			}
+		</script>
+	</div>
+</body>
+</html>
