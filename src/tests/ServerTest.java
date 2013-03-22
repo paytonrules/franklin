@@ -36,4 +36,10 @@ public class ServerTest {
         server.close();
         assertTrue(server.isClosed());
     }
+
+    @Test
+    public void testThreadPoolIsExecutiedOnEachRun() throws IOException {
+      //Hint don't use Executors directly in your server code.
+      assertTrue(false);
+    }
 }

@@ -22,7 +22,7 @@ public class Server {
     public void run() throws IOException {
         while(!serverSocket.isClosed()) {
             HttpSocket client = serverSocket.accept();
-            threadPool.execute(new RequestHandler(client, router));
+//            threadPool.execute(new RequestHandler(client, router));
         }
     }
 
