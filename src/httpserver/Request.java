@@ -31,6 +31,7 @@ public class Request {
                 length = Integer.parseInt((String) requestHeader.get("Content-Length"));
             }
             catch (NumberFormatException e) {}
+
             requestHeader.put("Body", parseBody(reader, length));
         }
         catch (Exception e) {

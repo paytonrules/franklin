@@ -51,6 +51,16 @@ public class RequestTest {
     }
 
     @Test
+    public void testMalformedParametersAreIgnored() throws UnsupportedEncodingException {
+      assertEquals(true, false);
+        String params = "var1=%3C%22aperture%20science%22%3E&var2=";
+        Map<String, String> parameters = Request.parseQueryString(params);
+        
+        assertEquals("<\"aperture science\">", parameters.get("var1"));
+        assertEquals(null, parameters.get("var2"));
+    }
+
+    @Test
     public void testPostRequest() {
         note = "POST / HTTP/1.1\r\nHost: localhost:5000\r\nContent-Length: 30\r\n\r\nline=for+the+good+of+all+of+us";
         inputStream = new ByteArrayInputStream(note.getBytes(Charset.forName("utf-8")));
