@@ -47,4 +47,10 @@ public class RequestHandlerTest {
         requestHandler.run();
         assertEquals("HTTP/1.1 200 OK\r\n\r\nWe do what we must because we can.", outputStream.toString());
     }
+
+    @Test
+    public void testTheSocketIsClosedOnRun() {
+      // remember you've already injected your socket
+      assertEquals(true, false);
+    }
 }

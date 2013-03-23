@@ -20,7 +20,7 @@ public class RequestHandler implements Runnable {
             Map<String, Object> request = Request.parseRequest(socket.getInputStream());
             Map<String, Object> response = router.route(request);
             ResponseWriter.write(response, socket.getOutputStream());
-            socket.close();
+//            socket.close();
         }
         catch (IOException e) {
             e.printStackTrace();
